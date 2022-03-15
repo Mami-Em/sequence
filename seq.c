@@ -60,7 +60,7 @@ int check(float val[], int c) {
             else
                 // -> else return 1
                 printf("none of the two\n");
-                return 1;
+                return 0;
         }  
     }
     return 0;
