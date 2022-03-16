@@ -6,10 +6,13 @@ int check(float val[], int c);
 int c_f(float val[], int c);
 int next(char a);
 void more_work();
+void guess() {
+    printf("Fct guess on its way\n");
+}
 
 int main(void) {
     // get input
-    int clue = get_int("How many numbers do you have? ");
+    int clue = get_int("\nHow many numbers do you have? ");
     // reurn 1 if number fewer than 3
     if (clue < 3)
     {
@@ -62,9 +65,9 @@ int check(float val[], int c) {
     }
     return 0;
 }
-// fib: -> x(n) = x(n-1) + x(n-2)
-// geo: -> x(n) = x(1)r^(n-1)
-// arithm: -> x(n) = x(1) + x(n-1)(r)
+// f: -> x(n) = x(n-1) + x(n-2)
+// g: -> x(n) = x(1)r^(n-1)
+// a: -> x(n) = x(1) + x(n-1)(r)
 int c_f(float val[], int c) {
     int i, t = 0, f = 0;
     for (i = 0; i < c; i++)
@@ -88,5 +91,14 @@ int next(char a) {
 }
 
 void more_work() {
-    printf("More work will follow here.\n");
+    printf("How can I help You?\n(1)-> Check one more sequence\n(2)-> Guess the nth number\n");
+    int v = get_int("Choice: ");
+    if (v == 1) 
+        main();
+    else if (v == 2) 
+        guess();
+    else {
+        printf("Please choose only from one of the choices!\n");
+        more_work();
+    }
 }
