@@ -3,65 +3,90 @@
 #include <string.h>
 
 int check(float val[], int c);
+int c_f(float val[], int c);
+int next(char a);
+void more_work();
 
 int main(void) {
     // get input
     int clue = get_int("How many numbers do you have? ");
-    // reurn 1 if number to few
+    // reurn 1 if number fewer than 3
     if (clue < 3)
     {
         printf("The number inserted should be more or equal to three.\n");
         return 1;
     }
+    // new empt arr
     float tab[clue];
     
     for (int i = 0; i<clue; i++) 
-        // insert values in an array
+        // insert values in new arr
         tab[i] = get_int("number n %i: ", i+1);
-    // create a function that check the sequence
+    // check the seq
     check(tab, clue);
-    // char next = get_char("Do you have more work for me?Y/N. ");
-    // if (next == 'n' || next == 'N') {
-    //     return 1;
-    // }
-    // printf("mbola mitohy\n");
+    // ask for more
+    char f_next = get_char("Do you have more work for me?Y/N. ");
+    next(f_next);
     return 0;
 }
-// fib: -> x(n) = x(n-1) + x(n-2)
-// geo: -> x(n) = x(1)r^(n-1)
-// arithm: -> x(n) = x(1) + x(n-1)(r)
 
 int check(float val[], int c) {
-    double geom[c]; 
-    int ed, arithm[c], fibo[c];
-    int i = 1, j = 0;
+    int s = c-2, i = 1, j = 0;
+    float geom[s], arithm[s], fibo[s]; 
     while(i<c && j<c-1) {
         arithm[j] = val[i] - val[j];
         geom[j] = val[i] / val[j];
         i++, j++;
     }
-    // check if geom
-    if(geom[0] == geom[1])
-    // geom[1] == geom[2]
+
     // -> if geom -- next seq and proof
+    if(c_f(geom, s) == 0)
         printf("geometric sequence\n");
-    // -> else check if arithm
     else {
-        // -> if arithm -- next seq and proof
-        if(arithm[0] == arithm[1])
+        // -> else arithm -- next seq and proof
+        if(c_f(arithm, s) == 0)
             printf("arithmetic sequence\n");
-        // -> else check if fibonacci 
         else {
-            // -> if fibo -- next seq and proof
-            if ((val[0]+val[1]) == val[2] && (val[1]+val[2]) == val[3])
+            for (int i = 0; i < c; i++)
+                fibo[i] = val[i];
+            // -> else fibo -- next seq and proof
+            if (c_f(fibo, s) == 0)
             {
                 printf("fibonacci sequence\n");
             }
             else
                 // -> else return 1
-                printf("none of the two\n");
-                return 0;
+                printf("none of the three\n");
+                return 1;
         }  
     }
     return 0;
+}
+// fib: -> x(n) = x(n-1) + x(n-2)
+// geo: -> x(n) = x(1)r^(n-1)
+// arithm: -> x(n) = x(1) + x(n-1)(r)
+int c_f(float val[], int c) {
+    int i, t = 0, f = 0;
+    for (i = 0; i < c; i++)
+    {
+        if (val[i] == val[i+1] || (val[i] + val[i+1]) == val[i+2]) t++;
+        else f++;
+    }
+    return f;
+}
+
+int next(char a) {
+    if (a == 'n' || a == 'N') {
+        printf("Goodbye!\n");
+        return 0;
+    } else if (a == 'y' || a == 'Y') more_work();
+    else {
+        char new = get_char("Please answer correctly!\nDo You have more work for me? (Y) for yes/ (N) for no ..\nY/N? ");
+        next(new);
+    }
+    return 0;
+}
+
+void more_work() {
+    printf("More work will follow here.\n");
 }
