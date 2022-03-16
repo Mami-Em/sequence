@@ -4,11 +4,10 @@
 
 int check(float val[], int c);
 int c_f(float val[], int c);
-int next(char a);
-void more_work();
-void guess() {
-    printf("Fct guess on its way\n");
-}
+int n_s(int x, float val_a[], float val_b[], int s);
+int fct_p(char a, int x, float val_a[], float val_b[], int s);
+void more_work(int x, float val_a[], float val_b[], int s);
+void guess(int x, float val_a[], float val_b[], int s);
 
 int main(void) {
     // get input
@@ -27,14 +26,11 @@ int main(void) {
         tab[i] = get_int("number n %i: ", i+1);
     // check the seq
     check(tab, clue);
-    // ask for more
-    char f_next = get_char("Do you have more work for me?Y/N. ");
-    next(f_next);
     return 0;
 }
 
 int check(float val[], int c) {
-    int s = c-2, i = 1, j = 0;
+    int s = c-2, i = 1, j = 0, cas;
     float geom[s], arithm[s], fibo[s]; 
     while(i<c && j<c-1) {
         arithm[j] = val[i] - val[j];
@@ -42,32 +38,38 @@ int check(float val[], int c) {
         i++, j++;
     }
 
-    // -> if geom -- next seq and proof
-    if(c_f(geom, s) == 0)
-        printf("geometric sequence\n");
+    // -> if geom -- next 
+    if(c_f(geom, s) == 0) {
+        cas = 1;
+        printf("Geometric sequence\n");
+        n_s(cas, val, geom, c);
+    }
     else {
-        // -> else arithm -- next seq and proof
-        if(c_f(arithm, s) == 0)
-            printf("arithmetic sequence\n");
+        // -> else arithm -- next 
+        if(c_f(arithm, s) == 0) {
+            cas = 2;
+            printf("Arithmetic sequence\n");
+            n_s(cas, val, arithm, c);
+        } 
         else {
             for (int i = 0; i < c; i++)
                 fibo[i] = val[i];
-            // -> else fibo -- next seq and proof
-            if (c_f(fibo, s) == 0)
-            {
-                printf("fibonacci sequence\n");
+            // -> else fibo -- next 
+            if (c_f(fibo, s) == 0) {
+                cas = 3;
+                printf("Fibonacci sequence\n");
+                n_s(cas, val, fibo, c);
             }
-            else
+            else {
                 // -> else return 1
-                printf("none of the three\n");
+                printf("Sorry, this sequence does not belong to any of the three I have.\n");
                 return 1;
+            }
         }  
     }
     return 0;
 }
-// f: -> x(n) = x(n-1) + x(n-2)
-// g: -> x(n) = x(1)r^(n-1)
-// a: -> x(n) = x(1) + x(n-1)(r)
+
 int c_f(float val[], int c) {
     int i, t = 0, f = 0;
     for (i = 0; i < c; i++)
@@ -78,27 +80,58 @@ int c_f(float val[], int c) {
     return f;
 }
 
-int next(char a) {
+int n_s(int x, float val_a[], float val_b[], int s) {  
+    char f_next = get_char("Do you have more work for me?Y/N. ");
+    fct_p(f_next, x, val_a, val_b, s);
+    return 0;
+}
+
+int fct_p(char a, int x, float val_a[], float val_b[], int s) {
     if (a == 'n' || a == 'N') {
         printf("Goodbye!\n");
         return 0;
-    } else if (a == 'y' || a == 'Y') more_work();
+    } else if (a == 'y' || a == 'Y') more_work(x, val_a, val_b, s);
     else {
         char new = get_char("Please answer correctly!\nDo You have more work for me? (Y) for yes/ (N) for no ..\nY/N? ");
-        next(new);
+        fct_p(new, x, val_a, val_b, s);
     }
     return 0;
 }
 
-void more_work() {
-    printf("How can I help You?\n(1)-> Check one more sequence\n(2)-> Guess the nth number\n");
+void more_work(int x, float val_a[], float val_b[], int s) {
+    printf("What can I do for You\n(1)-> Check one more sequence\n(2)-> Guess the nth number\n");
     int v = get_int("Choice: ");
     if (v == 1) 
         main();
     else if (v == 2) 
-        guess();
+        guess(x, val_a, val_b, s);
     else {
-        printf("Please choose only from one of the choices!\n");
-        more_work();
+        printf("\nPlease choose only from one of the choices!\n");
+        more_work(x, val_a, val_b, s);
+    }
+}
+
+void guess(int x, float val_a[], float val_b[], int s) {
+    int new = get_int("please give the nth position you desire to find: ");
+    int p_val = 1, new_v;
+    if (x == 1)
+    {
+        for (int i = 0; i < new - 2; i++)
+            p_val *= val_b[0];
+        // g: -> x(n) = x(1)r^(n-1)
+        new_v = val_a[1] * p_val;
+        printf("%i\n", new_v);
+    } else if (x == 2) {
+        // a: -> x(n) = x(1) + (n-1)(d)
+        new_v = val_a[1] + ((new - 2) * val_b[0]);
+        printf("%i\n", new_v);
+    } else {
+        int val_v[new];
+        for (int i = 0; i < s; i++)
+            val_v[i] = val_a[i];
+        // f: -> x(n) = x(n-1) + x(n-2)
+        for (int i = s; i < new; i++)
+            val_v[i] = val_v[i-1] + val_v[i-2];
+        printf("%i \n", val_v[new-1]);
     }
 }
