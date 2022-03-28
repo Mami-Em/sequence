@@ -9,6 +9,8 @@ int fct_p(char a, int x, float val_a[], float val_b[], int s);
 void more_work(int x, float val_a[], float val_b[], int s);
 void guess(int x, float val_a[], float val_b[], int s);
 
+
+//sequence function
 int main(void) {
     int clue = get_int("\nHow many numbers do you have? ");
 
