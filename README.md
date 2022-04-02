@@ -1,6 +1,11 @@
 # sequence
-now our little AI is abble to define what kind of sequence is being inserted by the user.
-- it doesn't allow users to insert less than 3 numbers
-- it doesn't allow users to answer else than y/n on direct question
-- now users can ask for more tasks
+is a program that does my math exercises for me
+- it is able to deferentiate geometric, arithmetic or fibonacci sequemces
 - it is able to determine the value at nth position
+
+# to get started
+- install the cs50 library
+- open terminal and run the file
+- insert how many sequence you are given to, make sure it's more than 3 sequence. press enter
+- insert one by one each sequences. press enter
+- it is going to tell you the type of sequence you have inserted, you will then, have the choice to go further and determine the value at nth position
